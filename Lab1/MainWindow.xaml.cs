@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media.Animation;
-
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 namespace CafeOrderApp
 {
     public partial class MainWindow : Window
@@ -9,7 +10,12 @@ namespace CafeOrderApp
         {
             InitializeComponent();
         }
-
+private void ClearOrdersButton_Click(object sender, RoutedEventArgs e)
+        {
+            OrdersListBox.Items.Clear();
+             if (OrdersListBox.Visibility == Visibility.Visible){
+            OrdersListBox.Visibility = Visibility.Collapsed;}
+        }
         private void PlaceOrderButton_Click(object sender, RoutedEventArgs e)
         {
             // Проверка на ввод имени
@@ -71,5 +77,17 @@ namespace CafeOrderApp
             // Применяем анимацию к свойству Opacity
             StatusLabel.BeginAnimation(OpacityProperty, fadeOutAnimation);
         }
-    }
+        private bool isDarkTheme = false;
+
+private void ToggleTheme_Click(object sender, RoutedEventArgs e)
+{
+    var theme = isDarkTheme ? "Styles.xaml" : "DarkTheme.xaml";
+    var dict = new ResourceDictionary { Source = new Uri(theme, UriKind.Relative) };
+
+    Application.Current.Resources.MergedDictionaries.Clear();
+    Application.Current.Resources.MergedDictionaries.Add(dict);
+
+    isDarkTheme = !isDarkTheme;
 }
+}
+    }

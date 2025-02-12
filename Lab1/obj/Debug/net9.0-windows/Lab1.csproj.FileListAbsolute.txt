@@ -20,3 +20,5 @@ D:\Jacob\Лабы\Программирование\Лаб1\Lab1\obj\Debug\net9.0
 D:\Jacob\Лабы\Программирование\Лаб1\Lab1\obj\Debug\net9.0-windows\App.baml
 D:\Jacob\Лабы\Программирование\Лаб1\Lab1\obj\Debug\net9.0-windows\Lab1_MarkupCompile.lref
 D:\Jacob\Лабы\Программирование\Лаб1\Lab1\obj\Debug\net9.0-windows\Styles.baml
+D:\Jacob\Лабы\Программирование\Лаб1\Lab1\obj\Debug\net9.0-windows\Lab1.sourcelink.json
+D:\Jacob\Лабы\Программирование\Лаб1\Lab1\obj\Debug\net9.0-windows\DarkTheme.baml

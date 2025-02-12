@@ -7,5 +7,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
-
+<ItemGroup>
+    <Resource Include="icon.ico" />
+    <Resource Include="dark-theme.png" />
+    <Resource Include="light-theme.png" />
+</ItemGroup>
+<ItemGroup>
+  <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    <PrivateAssets>all</PrivateAssets>
+  </PackageReference>
+</ItemGroup>
 </Project>
