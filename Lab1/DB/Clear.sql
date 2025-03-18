@@ -1,0 +1,7 @@
+CREATE PROCEDURE ClearAllOrders
+AS
+BEGIN
+    SET NOCOUNT ON;
+    DELETE FROM OrderOptions;
+    DELETE FROM Orders;
+END;

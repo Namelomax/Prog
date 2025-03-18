@@ -13,9 +13,8 @@
     <Resource Include="light-theme.png" />
 </ItemGroup>
 <ItemGroup>
-  <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    <PrivateAssets>all</PrivateAssets>
-  </PackageReference>
+  <PackageReference Include="MahApps.Metro" Version="2.4.10" />
+  <PackageReference Include="Microsoft.Data.SQLClient" Version="6.0.1" />
+  <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
 </ItemGroup>
 </Project>

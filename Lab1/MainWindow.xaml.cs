@@ -2,68 +2,111 @@
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using DBManager;
+using Lab1;
 namespace CafeOrderApp
 {
     public partial class MainWindow : Window
     {
+        private DbManager dbManager;
         public MainWindow()
         {
-            InitializeComponent();
+            try
+    {
+        InitializeComponent();
+        dbManager = new DbManager("Server=Jacob-book\\SQLEXPRESS;Database=CafeOrderDB;User Id=MyUser4;Password=123;TrustServerCertificate=True;");
+        LoadOrders();
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show($"Ошибка при запуске приложения: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+        Application.Current.Shutdown();
+    }
+        }
+private void LoadOrders(){
+    var orders = dbManager.GetOrders();
+    OrdersListBox.ItemsSource = orders;
+    OrdersListBox.Items.Refresh();
+    OrdersListBox.Visibility = Visibility.Visible;
+}
+private List<string> GetSelectedOptions()
+{
+    List<string> options = new List<string>();;
+    if (CheeseCheckBox.IsChecked == true) options.Add("Сыр");
+    if (SauceCheckBox.IsChecked == true) options.Add("Соус");
+    if (PepperCheckBox.IsChecked == true) options.Add("Перец");
+    return options;
+}
+
+        private string GetSelectedOrderType()
+        {
+            return TakeawayRadioButton.IsChecked == true ? "Взять с собой" : "Доставка";
         }
 private void ClearOrdersButton_Click(object sender, RoutedEventArgs e)
         {
-            OrdersListBox.Items.Clear();
-             if (OrdersListBox.Visibility == Visibility.Visible){
-            OrdersListBox.Visibility = Visibility.Collapsed;}
+ try
+    {
+        dbManager.ClearAllOrders();
+        LoadOrders();
+        OrdersListBox.Visibility = Visibility.Collapsed;
+        StatusLabel.Foreground = Brushes.Green;
+        StatusLabel.Content = "Все заказы удалены из базы данных!";
+        StatusLabel.Visibility = Visibility.Visible;
+        StartFadeOutAnimation();
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show($"Ошибка при очистке базы данных: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+    }
         }
-        private void PlaceOrderButton_Click(object sender, RoutedEventArgs e)
+private void PlaceOrderButton_Click(object sender, RoutedEventArgs e)
+{
+    try
+    {
+
+        string name = NameTextBox.Text.Trim();
+        if (string.IsNullOrEmpty(name))
         {
-            // Проверка на ввод имени
-            string name = NameTextBox.Text.Trim();
-            if (string.IsNullOrEmpty(name))
-            {
-                StatusLabel.Content = "Пожалуйста, введите имя!";
-                StatusLabel.Foreground = System.Windows.Media.Brushes.Red;
-                StatusLabel.Visibility = Visibility.Visible;
-                StartFadeOutAnimation();
-                return;
-            }
-
-            // Проверка выбора блюда
-            if (DishComboBox.SelectedItem == null)
-            {
-                StatusLabel.Content = "Пожалуйста, выберите основное блюдо!";
-                StatusLabel.Foreground = System.Windows.Media.Brushes.Red;
-                StatusLabel.Visibility = Visibility.Visible;
-                StartFadeOutAnimation();
-                return;
-            }
-
-            string dish = DishComboBox.SelectedItem.ToString();
-
-            string extras = "";
-            if (CheeseCheckBox.IsChecked == true) extras += "Сыр, ";
-            if (SauceCheckBox.IsChecked == true) extras += "Соус, ";
-            if (PepperCheckBox.IsChecked == true) extras += "Перец, ";
-            extras = extras.TrimEnd(',', ' ');
-            string orderExtras = string.IsNullOrEmpty(extras) ? "" : $"({extras})";
-            string method = TakeawayRadioButton.IsChecked == true ? "Взять с собой" : "Доставка";
-            string order = $"{name} заказал {dish} {orderExtras} [{method}]";
-
-            // Добавляем заказ в список
-            OrdersListBox.Items.Add(order);
-             if (OrdersListBox.Visibility == Visibility.Collapsed){
-            OrdersListBox.Visibility = Visibility.Visible;}
-
-            // Сбрасываем статус
-            StatusLabel.Content = "Заказ оформлен!";
-            StatusLabel.Foreground = System.Windows.Media.Brushes.Green;
+            StatusLabel.Content = "Пожалуйста, введите имя!";
+            StatusLabel.Foreground = Brushes.Red;
             StatusLabel.Visibility = Visibility.Visible;
-
-            // Запуск анимации для плавного исчезновения
             StartFadeOutAnimation();
+            return;
         }
 
+        if (DishComboBox.SelectedItem == null)
+        {
+            StatusLabel.Content = "Пожалуйста, выберите основное блюдо!";
+            StatusLabel.Foreground = Brushes.Red;
+            StatusLabel.Visibility = Visibility.Visible;
+            StartFadeOutAnimation();
+            return;
+                    }
+            var options = GetSelectedOptions();
+            var orderType = GetSelectedOrderType();
+            var selectedDish = DishComboBox.SelectedItem?.ToString() ?? ""; // Проверка на null
+
+            Order newOrder = new Order
+            {
+                ClientName = name,
+                Dish = selectedDish,
+                OrderType = orderType,
+                Options = options,
+            };
+
+            dbManager.AddOrder(newOrder.ClientName, newOrder.Dish, newOrder.OrderType, newOrder.Options);
+            LoadOrders();
+
+        StatusLabel.Content = "Заказ оформлен!";
+        StatusLabel.Foreground = Brushes.Green;
+        StatusLabel.Visibility = Visibility.Visible;    
+        StartFadeOutAnimation();
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show($"Произошла ошибка: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+    }
+}
         private void StartFadeOutAnimation()
         {
             // Создаем анимацию для исчезновения
