@@ -1,0 +1,312 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Фон и изображения для темной темы -->
+    <ImageBrush x:Key="BackgroundBrush" ImageSource="Images\dark-theme.png" Stretch="UniformToFill" Opacity="0.5"/>
+
+    <!-- Стиль для Border -->
+    <Style TargetType="Border">
+        <Setter Property="Background" Value="#1f1f1f"/>
+        <Style.Triggers>
+        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+            <Setter Property="Background" Value="LightGray"/>
+        </DataTrigger>
+    </Style.Triggers>
+    </Style>
+ <Style TargetType="TextBlock" x:Key="TextBlockInListBoxItemsControl">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="#EAEAEA"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Open Sans, Helvetica Neue, Arial, sans-serif"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    <!-- Стиль для Button -->
+    <Style TargetType="Button">
+        <Setter Property="Background" Value="#3A3A3A"/>
+        <Setter Property="Foreground" Value="#EAEAEA"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Padding" Value="10,5"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="Open Sans, Helvetica Neue, Arial, sans-serif"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Border"
+                            Background="{TemplateBinding Background}" 
+                            CornerRadius="10"
+                            BorderThickness="1"
+                            BorderBrush="#444444">
+                        <ContentPresenter HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#5C5C5C"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Стиль для Label -->
+    <Style TargetType="Label">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Foreground" Value="#EAEAEA"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="Open Sans, Helvetica Neue, Arial, sans-serif"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <!-- Стиль для TextBox -->
+    <Style TargetType="TextBox">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="5">
+                        <ScrollViewer x:Name="PART_ContentHost" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Background" Value="#2E2E2E"/>
+        <Setter Property="Foreground" Value="#EAEAEA"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="BorderBrush" Value="#444444"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+
+    <Style TargetType="ListBox">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="BorderBrush" Value="#b7b7b7"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Background" Value="#6b6b6b"/>
+    </Style>
+
+    <!-- Стиль для ComboBox -->
+    <Style TargetType="ComboBox">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="Open Sans, Helvetica Neue, Arial, sans-serif"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="BorderBrush" Value="#5C5C5C"/>
+<Setter Property="Background" Value="#3A3A3A"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Margin" Value="0,0,0,5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Grid>
+                        <Border Name="Border"
+                                Background="#4C4C4C"
+                                BorderBrush="#5C5C5C"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ContentPresenter Name="ContentSite"
+                                                  Grid.Column="0"
+                                                  Content="{TemplateBinding SelectionBoxItem}"
+                                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"
+                                                  Margin="10,3,30,3"/>
+
+                                <ToggleButton Grid.Column="1"
+                                              Name="ToggleButton"
+                                              ClickMode="Press"
+                                              Background="Transparent"
+                                              BorderThickness="0"
+                                              IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Path Data="M 0 0 L 4 4 L 8 0 Z"
+                                          Fill="White"
+                                          Width="10"
+                                          Height="6"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                                </ToggleButton>
+                            </Grid>
+                        </Border>
+
+                        <Popup Name="Popup"
+                               Placement="Bottom"
+                               IsOpen="{TemplateBinding IsDropDownOpen}"
+                               AllowsTransparency="True"
+                               Focusable="False"
+                               StaysOpen="False">
+                            <Border Background="#333333"
+                                    BorderBrush="#5C5C5C"
+                                    BorderThickness="1"
+                                    CornerRadius="10"
+                                    Width="{TemplateBinding ActualWidth}">
+                                <ScrollViewer Margin="5">
+                                    <StackPanel IsItemsHost="True"/>
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#555555"/>
+                        </Trigger>
+                        <Trigger Property="IsDropDownOpen" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#666666"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+<!-- Стиль для ComboBoxItem -->
+    <Style TargetType="ComboBoxItem">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Padding" Value="5,2"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Border Name="Border"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="25"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#5C5C5C"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#777777"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+<!-- Стиль для CheckBox -->
+<Style TargetType="CheckBox">
+    <Setter Property="FontSize" Value="15"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="FontFamily" Value="Open Sans, Helvetica Neue, Arial, sans-serif"/>
+    <Setter Property="Margin" Value="5"/>
+    <Setter Property="Foreground" Value="#EAEAEA"/>
+    <Setter Property="Template">
+        <Setter.Value>
+            <ControlTemplate TargetType="CheckBox">
+                <StackPanel Orientation="Horizontal">
+                    <!-- Кастомная кнопка -->
+                    <Border Name="CheckBorder"
+                            Width="18" Height="18"
+                            CornerRadius="5"
+                            BorderBrush="#EAEAEA"
+                            BorderThickness="2"
+                            Background="Transparent"
+                            Margin="5,0,10,0">
+                        <Path Name="CheckMark"
+                              Data="M2,9 L6,13 L14,4"
+                              Stroke="Transparent"
+                              StrokeThickness="2"/>
+                    </Border>
+                    <!-- Текст -->
+                    <ContentPresenter VerticalAlignment="Center" 
+                                      HorizontalAlignment="Left"
+                                      Content="{TemplateBinding Content}" 
+                                      TextElement.Foreground="{TemplateBinding Foreground}"/>
+                </StackPanel>
+
+                <ControlTemplate.Triggers>
+                    <!-- Цвет при наведении -->
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="CheckBorder" Property="BorderBrush" Value="#EAEAEA"/>
+                        <Setter TargetName="CheckMark" Property="Stroke" Value="#EAEAEA"/>
+                    </Trigger>
+
+                    <!-- Выбранное состояние -->
+                    <Trigger Property="IsChecked" Value="True">
+                        <Setter TargetName="CheckMark" Property="Stroke" Value="#EAEAEA"/>
+                        <Setter TargetName="CheckBorder" Property="BorderBrush" Value="#EAEAEA"/>
+                    </Trigger>
+
+                    <!-- Disabled -->
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter TargetName="CheckBorder" Property="Opacity" Value="0.5"/>
+                        <Setter Property="Foreground" Value="#EAEAEA"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        </Setter.Value>
+    </Setter>
+</Style>
+
+<!-- Стиль для RadioButton -->
+<Style TargetType="RadioButton">
+    <Setter Property="FontSize" Value="15"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="FontFamily" Value="Open Sans, Helvetica Neue, Arial, sans-serif"/>
+    <Setter Property="Margin" Value="5"/>
+    <Setter Property="Foreground" Value="#EAEAEA"/> <!-- Тот же цвет, что и у лейблов -->
+    <Setter Property="Template">
+        <Setter.Value>
+            <ControlTemplate TargetType="RadioButton">
+                <StackPanel Orientation="Horizontal">
+                    <!-- Кастомная кнопка -->
+                    <Border Name="RadioBorder"
+                            Width="18" Height="18"
+                            CornerRadius="9"
+                            BorderBrush="#EAEAEA"
+                            BorderThickness="2"
+                            Background="Transparent"
+                            Margin="5,0,10,0">
+                        <Ellipse Name="RadioDot"
+                                 Width="10" Height="10"
+                                 Fill="Transparent"/>
+                    </Border>
+                    
+                    <!-- Текст -->
+<ContentPresenter VerticalAlignment="Center" 
+                                      HorizontalAlignment="Left"
+                                      Content="{TemplateBinding Content}" 
+                                      TextElement.Foreground="{TemplateBinding Foreground}"/>
+                </StackPanel>
+
+                <ControlTemplate.Triggers>
+                    <!-- Цвет при наведении -->
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="RadioBorder" Property="BorderBrush" Value="#EAEAEA"/>
+                        <Setter TargetName="RadioDot" Property="Fill" Value="#EAEAEA"/>
+                    </Trigger>
+
+                    <!-- Выбранное состояние -->
+                    <Trigger Property="IsChecked" Value="True">
+                        <Setter TargetName="RadioDot" Property="Fill" Value="#EAEAEA"/>
+                        <Setter TargetName="RadioBorder" Property="BorderBrush" Value="#EAEAEA"/>
+                    </Trigger>
+
+                    <!-- Disabled -->
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter TargetName="RadioBorder" Property="Opacity" Value="0.5"/>
+                        <Setter Property="Foreground" Value="#EAEAEA"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        </Setter.Value>
+    </Setter>
+</Style>
+    
+</ResourceDictionary>
