@@ -20,25 +20,6 @@
         </DataTrigger>
     </Style.Triggers>
 </Style>
-<Style TargetType="ItemsControl">
-    <Setter Property=" Background" Value="#ffedd4"/>
-    <Style.Triggers>
-                    <EventTrigger RoutedEvent="UIElement.MouseEnter">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <ColorAnimation To="#9C6E58" Duration="0:0:0.3" Storyboard.TargetProperty="(ItemsControl.Background).(SolidColorBrush.Color)"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-                <EventTrigger RoutedEvent="UIElement.MouseLeave">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <ColorAnimation To="Transparent" Duration="0:0:0.3" Storyboard.TargetProperty="(ItemsControl.Background).(SolidColorBrush.Color)"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-            </Style.Triggers>
-</Style>
 <Style TargetType="Button">
     <Setter Property="Background" Value="#9C6E58"/>
     <Setter Property="Foreground" Value="#f2f2f2"/>

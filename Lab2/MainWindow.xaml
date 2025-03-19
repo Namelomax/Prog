@@ -20,15 +20,16 @@
             </Border>
             <Button Content="Новый заказ" Click="SelectDishesButton_Click" Height="35" Width="Auto" Margin="10,0,0,5"/>
 
-            <Border x:Name="CartPanel" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10" Margin="10,5,0,5" Grid.Column="0">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="0">
+            <!-- Корзина -->
+<Border x:Name="CartPanel" BorderThickness="1" CornerRadius="5" Padding="10" Grid.Column="1" Visibility="Collapsed">
+        <!-- Содержимое корзины с прокруткой -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="210">
             <StackPanel>
-                <TextBlock Text="Корзина" FontSize="18" FontWeight="Bold" Margin="0,0,0,10" Style="{DynamicResource TextBlockInListBoxItemsControl}"/>
+                <TextBlock Text="Корзина" FontSize="18" FontWeight="Bold" Margin="10,0,0,5" Style="{DynamicResource TextBlockInListBoxItemsControl}"/>
                 <ItemsControl x:Name="CartItemsControl">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderBrush="Gray" BorderThickness="2" CornerRadius="5" Margin="2" Padding="5"
-                                    >
+                            <Border Background="#FFF3E0" Margin="5" CornerRadius="5" Padding="5">
                                 <StackPanel>
                                     <TextBlock TextWrapping="Wrap" Style="{DynamicResource TextBlockInListBoxItemsControl}">
                                         <Run Text="{Binding Dish.Name}"/>
@@ -36,10 +37,10 @@
                                         <Run Text="{Binding OptionsString, Mode=OneWay}"/>
                                         <Run Text=")"/>
                                     </TextBlock>
-                                    <TextBlock TextWrapping="Wrap" Style="{DynamicResource TextBlockInListBoxItemsControl}">
+                                    <TextBlock Style="{DynamicResource TextBlockInListBoxItemsControl}">
                                         <Run Text="Кол-во: "/>
                                         <Run Text="{Binding Quantity}"/>
-                                    </TextBlock>
+                                        </TextBlock>
                                 </StackPanel>
                             </Border>
                         </DataTemplate>
@@ -48,6 +49,7 @@
             </StackPanel>
         </ScrollViewer>
 </Border>
+
 
             <!-- Способ получения -->
             <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10" Margin="10,5,0,5">
@@ -73,7 +75,7 @@
         <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10" Margin="10,10,0,10" Grid.Column="1">
         <StackPanel Grid.Column="1">
             <Label Content="Список заказов:" Margin="0,0,0,10" FontWeight="Bold"/>
-            <ListBox x:Name="OrdersListBox" VerticalAlignment="Stretch"
+            <ListBox x:Name="OrdersListBox" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="500"
                      HorizontalAlignment="Stretch" Visibility="Collapsed">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
