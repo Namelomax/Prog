@@ -6,13 +6,14 @@ using DBManager;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Lab1;
+using System.Windows.Input;
 namespace CafeOrderApp
 {
     public partial class MainWindow : Window
     {
         private DbManager dbManager;
         private ObservableCollection<OrderItem> selectedDishes = new ObservableCollection<OrderItem>();
-        
+        private Order selectedOrder;
         public MainWindow()
         {
             try
@@ -162,6 +163,60 @@ public void GetDishes(ObservableCollection<OrderItem> dishes)
     CartItemsControl.ItemsSource = dishes;
     CartPanel.Visibility = Visibility.Visible;
 }
+        public void RemoveDish(OrderItem item)
+        {
+            // Если выбранный заказ уже загружен для редактирования
+            if (selectedOrder != null && item != null)
+            {
+                selectedOrder.Items.Remove(item);
+            }
+            else
+            {
+                // Если удаляем из корзины до оформления заказа
+                if (selectedDishes.Contains(item))
+                {
+                    selectedDishes.Remove(item);
+                }
+            }
+        }
+       private void OrdersListBox_DoubleClick(object sender, MouseButtonEventArgs e)
+{
+    if (OrdersListBox.SelectedItem is Order order)
+    {
+        selectedOrder = order; // сохраняем выбранный заказ для редактирования
+        OrderEditWindow editWindow = new OrderEditWindow(order);
+        editWindow.Owner = this;
+        
+        // После того как окно закрыто и изменения сохранены
+        if (editWindow.ShowDialog() == true)
+        {
+            // Обновляем коллекцию заказов
+            //dbManager.UpdateOrder(order);  // Если вы обновляете данные в базе данных
+            LoadOrders();  // Перезагружаем список заказов, если это необходимо
 
+            // После сохранения изменений в базе данных или в коллекции, обновляем отображение
+            OrdersListBox.Items.Refresh();
+        }
+    }
+}
+
+
+        private void SaveChangesButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedOrder != null)
+            {
+                // Предположим, что текстовые поля для редактирования существуют: NameTextBox, OrderTypeTextBox
+                selectedOrder.ClientName = NameTextBox.Text;
+                // Если OrderTypeTextBox существует, иначе используем, например, радиокнопки или ComboBox
+                // selectedOrder.OrderType = OrderTypeTextBox.Text; 
+               // dbManager.UpdateOrder(selectedOrder);
+                MessageBox.Show("Изменения сохранены!", "Сохранение", MessageBoxButton.OK, MessageBoxImage.Information);
+                LoadOrders();
+            }
+            else
+            {
+                MessageBox.Show("Заказ не выбран для редактирования!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
 }
     }

@@ -90,7 +90,7 @@ public class DbManager
                     OrderId = orderReader.GetInt32(orderReader.GetOrdinal("OrderId")),
                     ClientName = orderReader.GetString(orderReader.GetOrdinal("ClientName")),
                     OrderType = orderReader.GetString(orderReader.GetOrdinal("OrderType")),
-                    Items = new List<OrderItem>()
+                    Items = new ObservableCollection<OrderItem>()
                 };
 
                 orders.Add(order);
@@ -146,133 +146,50 @@ public class DbManager
 
     return orders;
 }
-
-
-  /*  public void AddOrder(Order order)
+public void UpdateOrder(Order order)
+{
+    using (var connection = new SqlConnection(connectionString))
     {
-        using (SqlConnection connection = new SqlConnection(connectionString))
+        connection.Open();
+
+        // Обновляем заказ в таблице Orders
+        var updateOrderCommand = new SqlCommand("UPDATE Orders SET ClientName = @ClientName, OrderType = @OrderType WHERE OrderId = @OrderId", connection);
+        updateOrderCommand.Parameters.AddWithValue("@OrderId", order.OrderId);
+        updateOrderCommand.Parameters.AddWithValue("@ClientName", order.ClientName);
+        updateOrderCommand.Parameters.AddWithValue("@OrderType", order.OrderType);
+        updateOrderCommand.ExecuteNonQuery();
+
+        // Сначала удалим старые блюда и опции, связанные с этим заказом
+        var deleteOrderDishesCommand = new SqlCommand("DELETE FROM OrderDishes WHERE OrderId = @OrderId", connection);
+        deleteOrderDishesCommand.Parameters.AddWithValue("@OrderId", order.OrderId);
+        deleteOrderDishesCommand.ExecuteNonQuery();
+
+        var deleteOrderOptionsCommand = new SqlCommand("DELETE FROM OrderOptions WHERE OrderDishId IN (SELECT OrderDishId FROM OrderDishes WHERE OrderId = @OrderId)", connection);
+        deleteOrderOptionsCommand.Parameters.AddWithValue("@OrderId", order.OrderId);
+        deleteOrderOptionsCommand.ExecuteNonQuery();
+
+        // Вставляем обновленные блюда и их опции
+        foreach (var item in order.Items)
         {
-            connection.Open();
+            // Вставляем или обновляем блюда
+            var insertOrderDishCommand = new SqlCommand("INSERT INTO OrderDishes (OrderId, Dish, Quantity) VALUES (@OrderId, @Dish, @Quantity); SELECT SCOPE_IDENTITY()", connection);
+            insertOrderDishCommand.Parameters.AddWithValue("@OrderId", order.OrderId);
+            insertOrderDishCommand.Parameters.AddWithValue("@Dish", item.Dish.Name);
+            insertOrderDishCommand.Parameters.AddWithValue("@Quantity", item.Quantity);
+            int orderDishId = Convert.ToInt32(insertOrderDishCommand.ExecuteScalar());
 
-            // Вставляем заказ в таблицу Orders
-            string orderQuery = "INSERT INTO Orders (ClientName, OrderType) OUTPUT INSERTED.OrderId VALUES (@ClientName, @OrderType)";
-            
-            int orderId;
-            using (SqlCommand orderCommand = new SqlCommand(orderQuery, connection))
+            // Вставляем опции для каждого блюда
+            foreach (var option in item.Options)
             {
-                orderCommand.Parameters.AddWithValue("@ClientName", order.ClientName);
-                orderCommand.Parameters.AddWithValue("@OrderType", order.OrderType);
-                orderId = (int)orderCommand.ExecuteScalar();
-            }
-
-            // Вставляем блюда в таблицу OrderDishes
-            foreach (var item in order.Items)
-            {
-                string dishQuery = "INSERT INTO OrderDishes (OrderId, DishName, Quantity) OUTPUT INSERTED.OrderDishId VALUES (@OrderId, @DishName, @Quantity)";
-                
-                int orderDishId;
-                using (SqlCommand dishCommand = new SqlCommand(dishQuery, connection))
-                {
-                    dishCommand.Parameters.AddWithValue("@OrderId", orderId);
-                    dishCommand.Parameters.AddWithValue("@DishName", item.Dish.Name);
-                    dishCommand.Parameters.AddWithValue("@Quantity", item.Quantity);
-
-                    orderDishId = (int)dishCommand.ExecuteScalar();
-                }
-
-                // Вставляем опции в таблицу OrderOptions
-                foreach (var option in item.Options)
-                {
-                    string optionQuery = "INSERT INTO OrderOptions (OrderDishId, OptionName) VALUES (@OrderDishId, @OptionName)";
-                    using (SqlCommand optionCommand = new SqlCommand(optionQuery, connection))
-                    {
-                        optionCommand.Parameters.AddWithValue("@OrderDishId", orderDishId);
-                        optionCommand.Parameters.AddWithValue("@OptionName", option);
-
-                        optionCommand.ExecuteNonQuery();
-                    }
-                }
+                var insertOptionCommand = new SqlCommand("INSERT INTO OrderOptions (OrderDishId, OptionName) VALUES (@OrderDishId, @OptionName)", connection);
+                insertOptionCommand.Parameters.AddWithValue("@OrderDishId", orderDishId);
+                insertOptionCommand.Parameters.AddWithValue("@OptionName", option);
+                insertOptionCommand.ExecuteNonQuery();
             }
         }
-    }*/
-
-   /* public List<Order> GetOrders()
-    {
-        List<Order> orders = new List<Order>();
-
-        using (SqlConnection connection = new SqlConnection(connectionString))
-        {
-            connection.Open();
-            
-            // Получаем заказы
-            string orderQuery = "SELECT OrderId, ClientName, OrderType FROM Orders";
-            using (SqlCommand orderCommand = new SqlCommand(orderQuery, connection))
-            using (SqlDataReader orderReader = orderCommand.ExecuteReader())
-            {
-                while (orderReader.Read())
-                {
-                    var order = new Order
-                    {
-                        OrderId = orderReader.GetInt32(0),
-                        ClientName = orderReader.GetString(1),
-                        OrderType = orderReader.GetString(2),
-                        Items = new List<OrderItem>()
-                    };
-
-                    // Получаем блюда для каждого заказа
-                    string dishQuery = "SELECT OrderDishId, DishName, Quantity FROM OrderDishes WHERE OrderId = @OrderId";
-                    using (SqlCommand dishCommand = new SqlCommand(dishQuery, connection))
-                    {
-                        dishCommand.Parameters.AddWithValue("@OrderId", order.OrderId);
-                        using (SqlDataReader dishReader = dishCommand.ExecuteReader())
-                        {
-                            while (dishReader.Read())
-                            {
-                                var orderItem = new OrderItem
-                                {
-                                    Dish = new Dish { Name = dishReader.GetString(1) },
-                                    Quantity = dishReader.GetInt32(2),
-                                    Options = new List<string>()
-                                };
-
-                                // Получаем опции для каждого блюда
-                                string optionQuery = "SELECT OptionName FROM OrderOptions WHERE OrderDishId = @OrderDishId";
-                                using (SqlCommand optionCommand = new SqlCommand(optionQuery, connection))
-                                {
-                                    optionCommand.Parameters.AddWithValue("@OrderDishId", dishReader.GetInt32(0));
-                                    using (SqlDataReader optionReader = optionCommand.ExecuteReader())
-                                    {
-                                        while (optionReader.Read())
-                                        {
-                                            orderItem.Options.Add(optionReader.GetString(0));
-                                        }
-                                    }
-                                }
-
-                                order.Items.Add(orderItem);
-                            }
-                        }
-                    }
-
-                    orders.Add(order);
-                }
-            }
-        }
-        return orders;
     }
+}
 
-    public void ClearOrders()
-    {
-        using (SqlConnection connection = new SqlConnection(connectionString))
-        {
-            connection.Open();
-            string query = "DELETE FROM OrderOptions; DELETE FROM OrderDishes; DELETE FROM Orders;";
-            
-            using (SqlCommand command = new SqlCommand(query, connection))
-            {
-                command.ExecuteNonQuery();
-            }
-        }
-    }*/
+
 }
 }

@@ -76,7 +76,7 @@
         <StackPanel Grid.Column="1">
             <Label Content="Список заказов:" Margin="0,0,0,10" FontWeight="Bold"/>
             <ListBox x:Name="OrdersListBox" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="500"
-                     HorizontalAlignment="Stretch" Visibility="Collapsed">
+                     HorizontalAlignment="Stretch" Visibility="Collapsed" MouseDoubleClick="OrdersListBox_DoubleClick">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Style="{DynamicResource TextBlockInListBoxItemsControl}" Text="{Binding FullOrderDetails}" />

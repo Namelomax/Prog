@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1">
+    <mxGraphModel dx="1237" dy="1223" grid="1" gridsize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" value="null" style="group" vertex="1" connectable="0"/>
+        <mxCell id="1" value="null" style="group" vertex="1" connectable="0" parent="0"/>
+        
+        <!-- Orders Table -->
+        <mxCell id="2" value="Orders" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2" vertex="1" connectable="1" parent="1">
+          <mxGeometry x="80" y="80" width="200" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="3" value="OrderId (PK)&lt;br/&gt;OrderDate&lt;br/&gt;CustomerName" style="text;html=1;strokeWidth=0;rounded=0;whiteSpace=wrap;html=1" vertex="1" connectable="0" parent="2">
+          <mxGeometry width="180" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- AvailableDishes Table -->
+        <mxCell id="4" value="AvailableDishes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2" vertex="1" connectable="1" parent="1">
+          <mxGeometry x="300" y="80" width="200" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="5" value="Id (PK)&lt;br/&gt;Name&lt;br/&gt;Price" style="text;html=1;strokeWidth=0;rounded=0;whiteSpace=wrap;html=1" vertex="1" connectable="0" parent="4">
+          <mxGeometry width="180" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- OrderDishes Table -->
+        <mxCell id="6" value="OrderDishes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2" vertex="1" connectable="1" parent="1">
+          <mxGeometry x="80" y="250" width="200" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="7" value="OrderDishId (PK)&lt;br/&gt;OrderId (FK)&lt;br/&gt;DishId (FK)&lt;br/&gt;Quantity" style="text;html=1;strokeWidth=0;rounded=0;whiteSpace=wrap;html=1" vertex="1" connectable="0" parent="6">
+          <mxGeometry width="180" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- OrderOptions Table -->
+        <mxCell id="8" value="OrderOptions" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2" vertex="1" connectable="1" parent="1">
+          <mxGeometry x="300" y="250" width="200" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="9" value="OptionId (PK)&lt;br/&gt;OrderDishId (FK)&lt;br/&gt;OptionName (FK)" style="text;html=1;strokeWidth=0;rounded=0;whiteSpace=wrap;html=1" vertex="1" connectable="0" parent="8">
+          <mxGeometry width="180" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- AvailableOptions Table -->
+        <mxCell id="10" value="AvailableOptions" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2" vertex="1" connectable="1" parent="1">
+          <mxGeometry x="520" y="250" width="200" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="11" value="AvailableOptionID (PK)&lt;br/&gt;Name&lt;br/&gt;Price" style="text;html=1;strokeWidth=0;rounded=0;whiteSpace=wrap;html=1" vertex="1" connectable="0" parent="10">
+          <mxGeometry width="180" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- Relations between Tables -->
+        <mxCell id="12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0" edge="1" parent="1" source="2" target="6">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0" edge="1" parent="1" source="6" target="8">
+	  <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0" edge="1" parent="1" source="8" target="10">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

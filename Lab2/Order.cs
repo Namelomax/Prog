@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 namespace CafeOrderApp
 {
 public class Order
@@ -5,7 +6,7 @@ public class Order
     public int OrderId { get; set; }
     public string ClientName { get; set; }
     public string OrderType { get; set; }
-    public List<OrderItem> Items { get; set; }
+    public ObservableCollection<OrderItem> Items { get; set; }
 
     public string FullOrderDetails
 {

@@ -152,3 +152,5 @@ D:\Jacob\Лабы\Программирование\Лаб1\Lab2\obj\Debug\net9.0
 D:\Jacob\Лабы\Программирование\Лаб1\Lab2\obj\Debug\net9.0-windows\Lab2.pdb
 D:\Jacob\Лабы\Программирование\Лаб1\Lab2\obj\Debug\net9.0-windows\Lab2.genruntimeconfig.cache
 D:\Jacob\Лабы\Программирование\Лаб1\Lab2\obj\Debug\net9.0-windows\ref\Lab2.dll
+D:\Jacob\Лабы\Программирование\Лаб1\Lab2\obj\Debug\net9.0-windows\OrderEditWindow.baml
+D:\Jacob\Лабы\Программирование\Лаб1\Lab2\obj\Debug\net9.0-windows\OrderEditWindow.g.cs
