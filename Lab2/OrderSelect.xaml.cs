@@ -170,7 +170,6 @@ public partial class OrderSelect : Window
 
     private void ConfirmSelection_Click(object sender, RoutedEventArgs e)
     {
-        MessageBox.Show("Заказ оформлен!");
         mainWindow.GetDishes(cartItems);
         Close();
     }

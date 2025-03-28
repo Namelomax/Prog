@@ -28,7 +28,7 @@
                 <ItemsControl x:Name="CartItemsControl">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderBrush="Gray" BorderThickness="2" CornerRadius="5" Margin="2" Padding="5"
+                            <Border BorderThickness="2" CornerRadius="5" Margin="2" Padding="5"
                                     >
                                 <StackPanel>
                                     <TextBlock TextWrapping="Wrap" Style="{DynamicResource TextBlockInListBoxItemsControl}">

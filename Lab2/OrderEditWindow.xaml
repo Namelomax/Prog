@@ -25,13 +25,13 @@
         <DataTemplate>
             <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="3" Padding="5" Margin="5">
                 <StackPanel>
-                    <TextBlock TextWrapping="Wrap" FontWeight="Bold">
+                    <TextBlock TextWrapping="Wrap" FontWeight="Bold" Style="{DynamicResource TextBlockInListBoxItemsControl}">
                         <Run Text="{Binding Dish.Name}"/>
                         <Run Text=" ("/>
                         <Run Text="{Binding OptionsString, Mode=OneWay}"/>
                         <Run Text=")"/>
                     </TextBlock>
-                    <TextBlock TextWrapping="Wrap">
+                    <TextBlock TextWrapping="Wrap" Style="{DynamicResource TextBlockInListBoxItemsControl}">
                         <Run Text="Кол-во: "/>
                         <Run Text="{Binding Quantity}"/>
                     </TextBlock>
